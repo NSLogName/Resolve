@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xcty.resolve.dao.mapper.ResolveLogMapper" >
+  <resultMap id="BaseResultMap" type="com.xcty.resolve.dao.entity.ResolveLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="invoke_url" property="invokeUrl" jdbcType="VARCHAR" />
+    <result column="invoke_passtime" property="invokePasstime" jdbcType="INTEGER" />
+    <result column="invoke_time" property="invokeTime" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.xcty.resolve.dao.entity.ResolveLogWithBLOBs" extends="BaseResultMap" >
+    <result column="invoke_param" property="invokeParam" jdbcType="LONGVARCHAR" />
+    <result column="invoke_result" property="invokeResult" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, invoke_url, invoke_passtime, invoke_time, memo, create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    invoke_param, invoke_result
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_resolve_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_resolve_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xcty.resolve.dao.entity.ResolveLogWithBLOBs" >
+    insert into t_resolve_log (id, invoke_url, invoke_passtime, 
+      invoke_time, memo, create_time, 
+      invoke_param, invoke_result)
+    values (#{id,jdbcType=INTEGER}, #{invokeUrl,jdbcType=VARCHAR}, #{invokePasstime,jdbcType=INTEGER}, 
+      #{invokeTime,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{invokeParam,jdbcType=LONGVARCHAR}, #{invokeResult,jdbcType=LONGVARCHAR})
+  </insert>
+
+  <!-- 批量插入 -->
+  <insert id="insertResolveLogWithBLOBsBatch" parameterType="java.util.List">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_resolve_log
+    (invoke_url, invoke_passtime,
+    invoke_time, memo, create_time,
+    invoke_param, invoke_result)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      #{item.invokeUrl},
+      #{item.invokePasstime},
+      #{item.invokeTime},
+      #{item.memo},
+      #{item.createTime},
+      #{item.invokeParam},
+      #{item.invokeResult}
+      )
+    </foreach>
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.xcty.resolve.dao.entity.ResolveLogWithBLOBs" >
+    insert into t_resolve_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="invokeUrl != null" >
+        invoke_url,
+      </if>
+      <if test="invokePasstime != null" >
+        invoke_passtime,
+      </if>
+      <if test="invokeTime != null" >
+        invoke_time,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="invokeParam != null" >
+        invoke_param,
+      </if>
+      <if test="invokeResult != null" >
+        invoke_result,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="invokeUrl != null" >
+        #{invokeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="invokePasstime != null" >
+        #{invokePasstime,jdbcType=INTEGER},
+      </if>
+      <if test="invokeTime != null" >
+        #{invokeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="invokeParam != null" >
+        #{invokeParam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="invokeResult != null" >
+        #{invokeResult,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xcty.resolve.dao.entity.ResolveLogWithBLOBs" >
+    update t_resolve_log
+    <set >
+      <if test="invokeUrl != null" >
+        invoke_url = #{invokeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="invokePasstime != null" >
+        invoke_passtime = #{invokePasstime,jdbcType=INTEGER},
+      </if>
+      <if test="invokeTime != null" >
+        invoke_time = #{invokeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="invokeParam != null" >
+        invoke_param = #{invokeParam,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="invokeResult != null" >
+        invoke_result = #{invokeResult,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xcty.resolve.dao.entity.ResolveLogWithBLOBs" >
+    update t_resolve_log
+    set invoke_url = #{invokeUrl,jdbcType=VARCHAR},
+      invoke_passtime = #{invokePasstime,jdbcType=INTEGER},
+      invoke_time = #{invokeTime,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      invoke_param = #{invokeParam,jdbcType=LONGVARCHAR},
+      invoke_result = #{invokeResult,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xcty.resolve.dao.entity.ResolveLog" >
+    update t_resolve_log
+    set invoke_url = #{invokeUrl,jdbcType=VARCHAR},
+      invoke_passtime = #{invokePasstime,jdbcType=INTEGER},
+      invoke_time = #{invokeTime,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

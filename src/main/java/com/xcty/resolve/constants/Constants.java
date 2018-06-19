@@ -1,6 +1,7 @@
 package com.xcty.resolve.constants;
 
-import com.xcty.resolve.dao.entity.TimeoutWithBlobs;
+import com.xcty.resolve.dao.entity.ResolveLog;
+import com.xcty.resolve.dao.entity.ResolveLogWithBLOBs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * @version
  ********************************/
 public class Constants {
-   public static List<TimeoutWithBlobs> list = new ArrayList<TimeoutWithBlobs>();
+   public static List<ResolveLogWithBLOBs> list = new ArrayList<ResolveLogWithBLOBs>();
 
    public static String  macFilePath = "/Users/nslogname/Desktop/log/";
 
